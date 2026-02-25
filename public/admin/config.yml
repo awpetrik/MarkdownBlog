@@ -6,7 +6,7 @@ backend:
 local_backend: true
 
 media_folder: "src/assets/images"
-public_folder: "../../assets/images"
+public_folder: "../../../assets/images"
 
 collections:
   - name: "posts"

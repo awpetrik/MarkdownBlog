@@ -2,7 +2,7 @@
 title: This is My Story...
 published: 2026-02-26
 description: Everyone have a story. And this is My Story.
-image: ../../assets/images/rivbanner.jpg
+image: ../../../assets/images/rivbanner.jpg
 tags:
   - LifeJourney
 category: Story
