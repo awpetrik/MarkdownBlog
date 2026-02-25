@@ -29,3 +29,15 @@ yarn.lock
 # ide
 .idea
 *.iml
+.vscode/
+
+# cms & editor
+.frontmatter/
+frontmatter.json
+.obsidian/
+
+# local
+.astro/
+dist/
+node_modules/
+.vercel/
