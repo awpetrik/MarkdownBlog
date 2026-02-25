@@ -63,7 +63,10 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
     {isHomePage && (
     <>
         <div class="absolute inset-0 w-[100%] md:w-[80%] lg:w-[75%] pointer-events-none" style="background: var(--page-bg); mask-image: linear-gradient(to right, black 30%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);"></div>
-        <div class="absolute inset-0 max-w-[var(--page-width)] mx-auto px-8 md:px-6 flex flex-col items-start justify-start pt-[47vh] lg:justify-center lg:pt-0 onload-animation pointer-events-none" style="animation-delay: 300ms">
+        <!-- mobile: offset banner yang mulai dari -30vh; lg: tengah banner -->
+        <div class="absolute left-0 right-0 max-w-[var(--page-width)] mx-auto px-8 md:px-6
+            top-[47.5vh] lg:top-1/2 lg:-translate-y-1/2
+            flex flex-col items-start onload-animation pointer-events-none" style="animation-delay: 300ms">
             <h1 class="min-h-[3rem] md:min-h-[3.75rem] lg:min-h-[5.5rem] text-4xl md:text-5xl lg:text-7xl font-bold font-serif text-[var(--primary)] mb-3"><span id="typeit-hello"></span></h1>
             <p class="text-lg md:text-2xl text-neutral-600 dark:text-neutral-400 transition-opacity duration-700">{siteConfig.subtitle}</p>
         </div>
@@ -142,23 +145,18 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
     let charIndex = 0;
     let isDeleting = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
+    let generation = 0; // increment setiap kali init, agar instance lama berhenti
 
-    function type() {
+    function type(gen: number) {
+        if (gen !== generation) return; // instance lama, hentikan
         const el = document.getElementById("typeit-hello");
         if (!el) return;
 
         const current = words[wordIndex];
-
-        if (isDeleting) {
-            charIndex--;
-        } else {
-            charIndex++;
-        }
-
+        isDeleting ? charIndex-- : charIndex++;
         el.textContent = current.slice(0, charIndex);
 
         let delay = isDeleting ? 50 : 100;
-
         if (!isDeleting && charIndex === current.length) {
             delay = 1500;
             isDeleting = true;
@@ -168,17 +166,25 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
             delay = 400;
         }
 
-        timer = setTimeout(type, delay);
+        timer = setTimeout(() => type(gen), delay);
     }
 
+    let initScheduled = false;
     function initTypewriter() {
-        const el = document.getElementById("typeit-hello");
-        if (!el) return;
-        if (timer) { clearTimeout(timer); timer = null; }
-        el.textContent = "";
-        wordIndex = 0; charIndex = 0; isDeleting = false;
-        // Small delay to let the CSS onload-animation complete (opacity 0 → 1)
-        setTimeout(type, 400);
+        if (initScheduled) return;
+        initScheduled = true;
+        // debounce: tunggu semua event selesai dalam satu tick
+        setTimeout(() => {
+            initScheduled = false;
+            const el = document.getElementById("typeit-hello");
+            if (!el) return;
+            if (timer) { clearTimeout(timer); timer = null; }
+            generation++; // batalkan semua instance lama
+            el.textContent = "";
+            wordIndex = 0; charIndex = 0; isDeleting = false;
+            const g = generation;
+            setTimeout(() => type(g), 400);
+        }, 50);
     }
 
     document.addEventListener("DOMContentLoaded", initTypewriter);
