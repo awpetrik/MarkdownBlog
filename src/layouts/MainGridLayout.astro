@@ -141,53 +141,48 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
 
 <script>
     const words = ["Halo..", "Hello..", "Bonjour..", "Hola..", "Ciao..", "Hallo..", "こんにちは..", "안녕하세요..", "你好.."];
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let wordIndex = 0, charIndex = 0, isDeleting = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
-    let generation = 0; // increment setiap kali init, agar instance lama berhenti
+    let gen = 0;
 
-    function type(gen: number) {
-        if (gen !== generation) return; // instance lama, hentikan
+    function type(myGen: number) {
+        if (myGen !== gen) return; // batalkan instance lama
         const el = document.getElementById("typeit-hello");
         if (!el) return;
 
-        const current = words[wordIndex];
         isDeleting ? charIndex-- : charIndex++;
-        el.textContent = current.slice(0, charIndex);
+        el.textContent = words[wordIndex].slice(0, charIndex);
 
         let delay = isDeleting ? 50 : 100;
-        if (!isDeleting && charIndex === current.length) {
-            delay = 1500;
-            isDeleting = true;
+        if (!isDeleting && charIndex === words[wordIndex].length) {
+            delay = 1500; isDeleting = true;
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             wordIndex = (wordIndex + 1) % words.length;
             delay = 400;
         }
-
-        timer = setTimeout(() => type(gen), delay);
+        timer = setTimeout(() => type(myGen), delay);
     }
 
-    let initScheduled = false;
+    function stopTypewriter() {
+        gen++;
+        if (timer) { clearTimeout(timer); timer = null; }
+    }
+
     function initTypewriter() {
-        if (initScheduled) return;
-        initScheduled = true;
-        // debounce: tunggu semua event selesai dalam satu tick
-        setTimeout(() => {
-            initScheduled = false;
-            const el = document.getElementById("typeit-hello");
-            if (!el) return;
-            if (timer) { clearTimeout(timer); timer = null; }
-            generation++; // batalkan semua instance lama
-            el.textContent = "";
-            wordIndex = 0; charIndex = 0; isDeleting = false;
-            const g = generation;
-            setTimeout(() => type(g), 400);
-        }, 50);
+        const el = document.getElementById("typeit-hello");
+        if (!el) return; // bukan home page, abaikan
+        stopTypewriter();
+        el.textContent = "";
+        wordIndex = 0; charIndex = 0; isDeleting = false;
+        const myGen = gen;
+        // tunggu 650ms agar CSS onload-animation (300ms delay + 300ms duration) selesai
+        timer = setTimeout(() => type(myGen), 650);
     }
+
+    // Hentikan animasi saat Swup mulai transisi keluar (mencegah race condition)
+    document.addEventListener("swup:animation:out:start", stopTypewriter);
 
     document.addEventListener("DOMContentLoaded", initTypewriter);
     document.addEventListener("astro:page-load", initTypewriter);
-    document.addEventListener("swup:page:view", initTypewriter);
 </script>
