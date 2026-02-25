@@ -41,3 +41,6 @@ frontmatter.json
 dist/
 node_modules/
 .vercel/
+
+# Backup files
+*.bak
