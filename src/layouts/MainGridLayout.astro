@@ -60,18 +60,14 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
                   src={siteConfig.banner.src} position={siteConfig.banner.position}
     >
     </ImageWrapper>
-    {isHomePage && (
-    <>
-        <div class="absolute inset-0 w-[100%] md:w-[80%] lg:w-[75%] pointer-events-none" style="background: var(--page-bg); mask-image: linear-gradient(to right, black 30%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);"></div>
-        <!-- mobile: offset banner yang mulai dari -30vh; lg: tengah banner -->
-        <div class="absolute left-0 right-0 max-w-[var(--page-width)] mx-auto px-8 md:px-6
-            top-[47.5vh] lg:top-1/2 lg:-translate-y-1/2
-            flex flex-col items-start onload-animation pointer-events-none" style="animation-delay: 300ms">
-            <h1 class="min-h-[3rem] md:min-h-[3.75rem] lg:min-h-[5.5rem] text-4xl md:text-5xl lg:text-7xl font-bold font-serif text-[var(--primary)] mb-3"><span id="typeit-hello"></span></h1>
-            <p class="text-lg md:text-2xl text-neutral-600 dark:text-neutral-400 transition-opacity duration-700">{siteConfig.subtitle}</p>
-        </div>
-    </>
-    )}
+    <div id="banner-text-overlay" class="absolute inset-0 w-[100%] md:w-[80%] lg:w-[75%] pointer-events-none" style="background: var(--page-bg); mask-image: linear-gradient(to right, black 30%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);"></div>
+    <!-- mobile: offset banner yang mulai dari -30vh; lg: tengah banner -->
+    <div id="banner-text-content" class="absolute left-0 right-0 max-w-[var(--page-width)] mx-auto px-8 md:px-6
+        top-[47.5vh] lg:top-1/2 lg:-translate-y-1/2
+        flex flex-col items-start onload-animation pointer-events-none" style="animation-delay: 300ms">
+        <h1 class="min-h-[3rem] md:min-h-[3.75rem] lg:min-h-[5.5rem] text-4xl md:text-5xl lg:text-7xl font-bold font-serif text-[var(--primary)] mb-3"><span id="typeit-hello"></span></h1>
+        <p class="text-lg md:text-2xl text-neutral-600 dark:text-neutral-400 transition-opacity duration-700">{siteConfig.subtitle}</p>
+    </div>
 </div>}
 
 <!-- Main content -->
@@ -180,9 +176,20 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
         timer = setTimeout(() => type(myGen), 650);
     }
 
-    // Hentikan animasi saat Swup mulai transisi keluar (mencegah race condition)
-    document.addEventListener("swup:animation:out:start", stopTypewriter);
+    function updateBannerOverlay() {
+        const overlay = document.getElementById('banner-text-overlay');
+        const content = document.getElementById('banner-text-content');
+        const basePath = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+        const path = window.location.pathname.replace(/\/$/, '') || '/';
+        const isHome = path === '' || path === '/' || path === basePath;
+        const display = isHome ? '' : 'none';
+        if (overlay) overlay.style.display = display;
+        if (content) content.style.display = display;
+    }
 
-    document.addEventListener("DOMContentLoaded", initTypewriter);
-    document.addEventListener("astro:page-load", initTypewriter);
+    // Hentikan animasi saat Swup mulai transisi keluar (mencegah race condition)
+    document.addEventListener('swup:animation:out:start', stopTypewriter);
+
+    document.addEventListener('DOMContentLoaded', () => { updateBannerOverlay(); initTypewriter(); });
+    document.addEventListener('astro:page-load', () => { updateBannerOverlay(); initTypewriter(); });
 </script>
