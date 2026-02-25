@@ -25,6 +25,8 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
 import { YoutubeComponent, SpotifyComponent } from "./src/plugins/rehype-component-embed.mjs";
 
+import react from "@astrojs/react";
+
 // https://astro.build/config
 export default defineConfig({
 	site: "https://fuwari.vercel.app/",
@@ -101,6 +103,7 @@ export default defineConfig({
 			}
 		}),
         svelte(),
+		react(),
 		sitemap(),
 	],
 	markdown: {

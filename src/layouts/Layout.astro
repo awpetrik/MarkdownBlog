@@ -5,6 +5,9 @@ import "@fontsource/inter/700.css";
 import "@fontsource/roboto-mono/400.css";
 import "@fontsource/roboto-mono/500.css";
 import "@fontsource/roboto-mono/700.css";
+import "@fontsource/fira-mono/400.css";
+import "@fontsource/fira-mono/500.css";
+import "@fontsource/fira-mono/700.css";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
 import { profileConfig, siteConfig } from "@/config";
@@ -176,7 +179,7 @@ const bannerOffset =
 
 @layer components {
 	.prose, .custom-md {
-		font-family: 'Georgia', serif;
+		font-family: 'Fira Mono', monospace;
 	}
 	.prose :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"] *)) {
 		font-family: 'Inter', sans-serif;

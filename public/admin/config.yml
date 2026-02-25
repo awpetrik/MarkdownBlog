@@ -1,0 +1,39 @@
+backend:
+  name: github
+  repo: awpetrik/MarkdownBlog
+  branch: main
+
+local_backend: true
+
+media_folder: "src/assets/images"
+public_folder: "/src/assets/images"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "src/content/posts"
+    create: true
+    slug: "{{slug}}/index"
+    extension: "md"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Published Date", name: "published", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Cover Image", name: "image", widget: "image", required: false}
+      - {label: "Tags", name: "tags", widget: "list", allow_add: true, required: false}
+      - {label: "Category", name: "category", widget: "string", required: false}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false, required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "logs"
+    label: "Timeline Logs"
+    folder: "src/content/logs"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - {label: "Title", name: "title", widget: "string", required: false}
+      - {label: "Published Date", name: "published", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", allow_add: true, required: false}
+      - {label: "Body", name: "body", widget: "markdown"}

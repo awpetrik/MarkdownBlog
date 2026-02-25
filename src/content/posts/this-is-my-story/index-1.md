@@ -1,16 +1,13 @@
 ---
-title: This is my story.
-published: 2026-02-25T14:03:41.019Z
-description: Everyone has a story. And this... is My story
+title: This is My Story...
+published: 2026-02-26
+description: Everyone have a story. And this is My Story.
+image: /src/assets/images/rivbanner.jpg
 tags:
-    - My Life
-category: Yapping
+  - LifeJourney
+category: Story
+draft: false
 ---
-
-::spotify{id="14tud1FLjpHMYHpD2c7NbO"}
-
-![Rivaldiru](/src/assets/images/RivalRu.jpg)
-
 Semua orang punya cerita, termasuk gw. Tapi dulu gw sering ngerasa cerita gw biasa aja, ga cukup menarik buat diceritain. Sampai akhirnya gw sadar, hidup itu bukan soal dramatis atau engga, tapi soal jujur atau engga. Dan blog ini lahir dari kejujuran itu.
 
 Gw bikin blog ini bukan karena gw udah jadi siapa-siapa. Justru karena gw masih di tengah perjalanan. Masih belajar, masih salah, masih jatuh bangun. Buat gw, hidup itu eksperimen panjang. Kadang gw ngerasa lagi di atas, pede, visioner, tau mau ke mana. Kadang juga di bawah, overthinking, ngeragukan diri sendiri, ngerasa kaya semuanya jalan di tempat. Tapi satu hal yang gw pegang, semuanya selalu bisa di-improve. Selama masih ada kemauan buat mikir dan evaluasi, berarti belum selesai.
@@ -22,8 +19,6 @@ Saat gw lulus dari sekolah, gw bener-bener ngerasain gimana susahnya menjalani h
 Gw orang yang melankolis. Gw gampang hanyut dalam suasana. Musik, malam yang sepi, atau obrolan kecil bisa tiba-tiba bikin gw tenggelam dalam pikiran sendiri. Di saat gw kesepian, di situlah letak fragile-nya diri gw. Ada gap di pikiran gw yang kadang kebuka terlalu lebar, bikin gw overthinking, ngerasa kehilangan arah, ngerasa kaya lagi berdiri di tengah jalan tanpa papan petunjuk. Dan itu capek. Capek karena musuhnya bukan orang lain, tapi isi kepala sendiri.
 
 Sejak tahun 2024 sampai sekarang, gw mulai kehilangan banyak orang yang gw cintai. Gw juga kehilangan banyak teman. Dan itu sakit banget. Kehilangan bukan cuma soal orangnya ga ada, tapi soal kebiasaan yang tiba-tiba hilang, soal ruang kosong yang dulu diisi suara mereka. Di situ gw sadar betapa gw takut sendirian.
-
-
 
 Setiap hari gw berdoa supaya dijauhkan dari kesedihan. Gw cuma pengen punya teman sejati yang bener-bener ada di saat suka maupun duka. Gw tau konsep inner circle dan outer circle. Dan jujur, gw lebih banyak nemuin outer daripada inner. Gw kenal banyak orang, gw bisa ngobrol, gw bisa ketawa bareng, tapi jarang banget yang bisa gw anggap benar-benar “rumah”. Gw belum nemuin my people.
 
@@ -42,3 +37,5 @@ Blog ini bukan panggung buat terlihat paling tahu. Gw ga tertarik keliatan sempu
 Kalau lo lagi ada di fase bangun ulang, ngerakit ulang identitas, atau lagi berusaha nemuin arah di tengah kebingungan, mungkin tulisan-tulisan di sini bisa jadi cermin. Karena di balik semua ini, gw juga cuma manusia yang lagi belajar berdamai sama kesepian, kehilangan, dan proses menjadi dewasa.
 
 Dan mungkin, pelan-pelan, di antara doa-doa itu, gw akan dipertemukan dengan orang-orang yang benar-benar tinggal.
+
+::spotify{id="14tud1FLjpHMYHpD2c7NbO"}

@@ -1,0 +1,47 @@
+---
+import { Icon } from "astro-icon/components";
+import { profileConfig } from "../../config";
+import ImageWrapper from "./ImageWrapper.astro";
+
+interface Props {
+	class?: string;
+}
+
+const className = Astro.props.class;
+const { name, bio, links, avatar } = profileConfig;
+---
+
+<div class={`flex items-center gap-5 card-base rounded-xl px-6 py-5 ${className}`}>
+    <!-- Avatar -->
+    <div class="shrink-0">
+        <ImageWrapper
+            src={avatar}
+            basePath=""
+            alt={name}
+            class="w-16 h-16 rounded-full object-cover border-2 border-[var(--primary)] border-opacity-50"
+        />
+    </div>
+
+    <!-- Info -->
+    <div class="flex flex-col gap-1 min-w-0">
+        <div class="flex items-center gap-2 flex-wrap">
+            <span class="font-bold text-black/80 dark:text-white/80 text-base">{name}</span>
+            <span class="text-black/30 dark:text-white/30 text-sm">— Penulis</span>
+        </div>
+        <p class="text-black/50 dark:text-white/50 text-sm leading-relaxed line-clamp-2">{bio}</p>
+
+        <!-- Social links -->
+        <div class="flex gap-3 mt-1">
+            {links.map((link) => (
+                <a
+                    href={link.url}
+                    target="_blank"
+                    aria-label={link.name}
+                    class="transition text-black/30 dark:text-white/30 hover:text-[var(--primary)] dark:hover:text-[var(--primary)]"
+                >
+                    <Icon name={link.icon} class="text-[1.1rem]" />
+                </a>
+            ))}
+        </div>
+    </div>
+</div>
