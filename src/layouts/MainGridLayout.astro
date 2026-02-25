@@ -139,31 +139,41 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
 <script>
     import TypeIt from "typeit";
 
+    let typeItInstance: any = null;
+
     function initTypeIt() {
         const el = document.getElementById("typeit-hello");
-        if (el && !el.hasAttribute("data-typeit-id")) {
-            new TypeIt("#typeit-hello", {
-                strings: [
-                    "Halo..", 
-                    "Hello..", 
-                    "Bonjour..", 
-                    "Hola..", 
-                    "Ciao..", 
-                    "Hallo..", 
-                    "こんにちは..", 
-                    "안녕하세요..", 
-                    "你好.."
-                ],
-                speed: 100,
-                breakLines: false,
-                waitUntilVisible: true,
-                loop: true,
-                deleteSpeed: 50,
-                nextStringDelay: [1500, 500]
-            }).go();
+        if (!el) return;
+
+        if (typeItInstance) {
+            try { typeItInstance.destroy(); } catch {}
+            typeItInstance = null;
         }
+        el.innerHTML = "";
+        el.removeAttribute("data-typeit-id");
+
+        typeItInstance = new TypeIt("#typeit-hello", {
+            strings: [
+                "Halo..",
+                "Hello..",
+                "Bonjour..",
+                "Hola..",
+                "Ciao..",
+                "Hallo..",
+                "こんにちは..",
+                "안녕하세요..",
+                "你好.."
+            ],
+            speed: 100,
+            breakLines: false,
+            waitUntilVisible: false,
+            loop: true,
+            deleteSpeed: 50,
+            nextStringDelay: [1500, 500]
+        }).go();
     }
 
     document.addEventListener("DOMContentLoaded", initTypeIt);
     document.addEventListener("astro:page-load", initTypeIt);
+    document.addEventListener("swup:page:view", initTypeIt);
 </script>
