@@ -137,43 +137,51 @@ const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
 </Layout>
 
 <script>
-    import TypeIt from "typeit";
+    const words = ["Halo..", "Hello..", "Bonjour..", "Hola..", "Ciao..", "Hallo..", "こんにちは..", "안녕하세요..", "你好.."];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
-    let typeItInstance: any = null;
-
-    function initTypeIt() {
+    function type() {
         const el = document.getElementById("typeit-hello");
         if (!el) return;
 
-        if (typeItInstance) {
-            try { typeItInstance.destroy(); } catch {}
-            typeItInstance = null;
-        }
-        el.innerHTML = "";
-        el.removeAttribute("data-typeit-id");
+        const current = words[wordIndex];
 
-        typeItInstance = new TypeIt("#typeit-hello", {
-            strings: [
-                "Halo..",
-                "Hello..",
-                "Bonjour..",
-                "Hola..",
-                "Ciao..",
-                "Hallo..",
-                "こんにちは..",
-                "안녕하세요..",
-                "你好.."
-            ],
-            speed: 100,
-            breakLines: false,
-            waitUntilVisible: false,
-            loop: true,
-            deleteSpeed: 50,
-            nextStringDelay: [1500, 500]
-        }).go();
+        if (isDeleting) {
+            charIndex--;
+        } else {
+            charIndex++;
+        }
+
+        el.textContent = current.slice(0, charIndex);
+
+        let delay = isDeleting ? 50 : 100;
+
+        if (!isDeleting && charIndex === current.length) {
+            delay = 1500;
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            delay = 400;
+        }
+
+        timer = setTimeout(type, delay);
     }
 
-    document.addEventListener("DOMContentLoaded", initTypeIt);
-    document.addEventListener("astro:page-load", initTypeIt);
-    document.addEventListener("swup:page:view", initTypeIt);
+    function initTypewriter() {
+        const el = document.getElementById("typeit-hello");
+        if (!el) return;
+        if (timer) { clearTimeout(timer); timer = null; }
+        el.textContent = "";
+        wordIndex = 0; charIndex = 0; isDeleting = false;
+        // Small delay to let the CSS onload-animation complete (opacity 0 → 1)
+        setTimeout(type, 400);
+    }
+
+    document.addEventListener("DOMContentLoaded", initTypewriter);
+    document.addEventListener("astro:page-load", initTypewriter);
+    document.addEventListener("swup:page:view", initTypewriter);
 </script>
