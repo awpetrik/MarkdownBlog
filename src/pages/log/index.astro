@@ -1,0 +1,94 @@
+---
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getCollection } from "astro:content";
+
+const allLogs = await getCollection("logs");
+const sortedLogs = allLogs.sort((a, b) => {
+	return new Date(b.data.published).getTime() - new Date(a.data.published).getTime();
+});
+
+const renderedLogs = await Promise.all(
+	sortedLogs.map(async (log) => {
+		const { Content } = await log.render();
+		return { ...log, Content };
+	})
+);
+---
+
+<MainGridLayout title="Timeline Log">
+    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32 mb-4 bg-[var(--card-bg)]">
+        <div class="card-base z-10 px-9 py-6 relative w-full ">
+            <div class="text-3xl font-bold font-sans mb-6 text-neutral-800 dark:text-neutral-100">Log Harian</div>
+            
+            <div class="relative pl-6 border-l-2 border-[var(--primary)] border-opacity-30 flex flex-col gap-8 pb-4">
+                {renderedLogs.map(log => {
+					const Content = log.Content;
+					return (
+                    <div class="relative log-entry transition-all duration-300" data-tags={JSON.stringify(log.data.tags || [])}>
+                        <!-- Dot -->
+                        <div class="absolute -left-[31px] w-4 h-4 bg-[var(--primary)] rounded-full mt-1.5 shadow-sm shadow-[var(--primary)]" />
+                        
+                        <div class="flex flex-col mb-2">
+							<div class="text-sm font-semibold font-sans text-neutral-400 mb-1">
+								{log.data.published.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}
+							</div>
+                            {log.data.title && (
+                                <h3 class="text-xl font-bold font-sans mb-2 text-neutral-800 dark:text-neutral-100">{log.data.title}</h3>
+                            )}
+                        </div>
+                        
+                        <div class="prose dark:prose-invert max-w-none custom-md text-neutral-600 dark:text-neutral-300 font-serif">
+                             <Content />
+                        </div>
+						
+						{log.data.tags && log.data.tags.length > 0 && (
+							<div class="flex gap-2 mt-4 flex-wrap">
+								{log.data.tags.map(tag => (
+									<a href={`/log/?tag=${encodeURIComponent(tag)}`} class="btn-regular h-8 text-sm px-3 rounded-lg hover:text-[initial] transition">#{tag}</a>
+								))}
+							</div>
+						)}
+                    </div>
+                )})}
+            </div>
+
+            {renderedLogs.length === 0 && (
+                <div class="text-neutral-500 italic font-sans">Belum ada log harian yang dicatat.</div>
+            )}
+        </div>
+    </div>
+</MainGridLayout>
+
+<script is:inline>
+function filterLogsByTag() {
+    const params = new URLSearchParams(window.location.search);
+    const tag = params.get("tag");
+    const logs = document.querySelectorAll(".log-entry");
+    
+    logs.forEach(log => {
+        if (!tag) {
+            log.style.display = "block";
+            return;
+        }
+        
+        try {
+            const tags = JSON.parse(log.getAttribute("data-tags") || "[]");
+            if (tags.includes(tag)) {
+                log.style.display = "block";
+            } else {
+                log.style.display = "none";
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    });
+}
+
+// Run on initial load
+filterLogsByTag();
+
+// Run on Swup page transitions if present
+if (typeof document !== 'undefined') {
+    document.addEventListener("swup:pageView", filterLogsByTag);
+}
+</script>

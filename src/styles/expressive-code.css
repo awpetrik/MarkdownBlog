@@ -1,0 +1,9 @@
+.expressive-code {
+    .frame {
+        @apply !shadow-none;
+    }
+
+    .title {
+        font-family: 'Google Sans Code', 'Google Sans Mono', 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+}
